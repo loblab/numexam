@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from question import *
 import time
+from question import *
 
 class Exam:
 
@@ -17,8 +17,11 @@ class Exam:
         self.total = total
 
     def opendb(self):
-        self.dbfile = "record.txt"
-        self.dbfh = open(self.dbfile, "w")
+        lt = time.localtime(time.time())
+        dbfile = time.strftime("%Y%m%d-%H%M.txt", lt)
+        self.dbfh = open(dbfile, "w")
+        tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
+        self.writeline("  Start: %s" % tstr)
         self.writeline('=' * 64)
 
     def closedb(self):
@@ -75,9 +78,12 @@ class Exam:
         done = self.correct + self.wrong
         if done > 0:
             self.writeline('=' * 64)
-            self.writeline("   Time: %5.1fs, Average: %5.1fs" % (self.dur, self.dur / done), True)
+            lt = time.localtime(time.time())
+            tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
+            self.writeline(" Finish: %s" % tstr)
+            self.writeline("   Cost: %5.1fs, Average: %5.1fs" % (self.dur, self.dur / done), True)
             self.writeline("Correct: %3d,      Wrong: %3d" % (self.correct, self.wrong), True)
-            self.writeline("  Score: %3d" % (100.0 * self.correct / done + 0.5), True)
+            self.writeline("                   Score: %3d" % (100.0 * self.correct / done + 0.5), True)
             print("")
         print("Bye! See you next time.")
         print("")
