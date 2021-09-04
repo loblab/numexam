@@ -60,7 +60,7 @@ class Exam:
         self.correct = 0
         self.wrong = 0
         self.dur = 0
-        while self.round():
+        while self.correct < self.total and self.round():
             print("")
         self.report()
 

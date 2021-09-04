@@ -29,6 +29,9 @@ class Question:
         return expr
 
     def anwser(self, expr):
+        if expr.find('/') < 0:
+            v = eval(expr)
+            return str(v)
         e1 = expr.replace('/', '//')
         e2 = expr.replace('/', '%')
         v = eval(e1)
