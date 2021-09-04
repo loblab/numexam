@@ -16,7 +16,7 @@ class Exam:
         self.qbank = Question(templates)
         self.total = total
 
-    def opendb(self):
+    def open(self):
         lt = time.localtime(time.time())
         dbfile = time.strftime("%Y%m%d-%H%M.txt", lt)
         self.dbfh = open(dbfile, "w")
@@ -24,7 +24,7 @@ class Exam:
         self.writeline("  Start: %s" % tstr)
         self.writeline('=' * 64)
 
-    def closedb(self):
+    def close(self):
         self.dbfh.close()
 
     def writeline(self, line, stdout=False):
@@ -61,12 +61,10 @@ class Exam:
                 return True
             elif anwser == anwser0:
                 print(" CORRECT! %.1fs" % dur)
-                err = 0
                 self.correct += 1
                 self.record(question, anwser0, anwser, True, dur)
                 return True
             else:
-                err = 1
                 self.wrong += 1
                 self.record(question, anwser0, anwser, False, dur)
                 print("   WRONG! %.1fs" % dur)
@@ -74,7 +72,7 @@ class Exam:
         return True
 
     def report(self):
-        print("")
+        print()
         done = self.correct + self.wrong
         if self.correct > 0:
             self.writeline('=' * 64)
@@ -84,20 +82,20 @@ class Exam:
             self.writeline("   Cost: %5.1fs      Avg: %5.1fs" % (self.dur, self.dur / self.correct), True)
             self.writeline("Correct: %3d       Wrong: %3d" % (self.correct, self.wrong), True)
             self.writeline("                   Score: %3d" % (100.0 * self.correct / done + 0.5), True)
-            print("")
+            print()
         print("Bye! See you next time.")
-        print("")
+        print()
 
     def run(self):
-        self.opendb()
+        self.open()
         self.index = 0
         self.correct = 0
         self.wrong = 0
         self.dur = 0
         while self.correct < self.total and self.round():
-            print("")
+            print()
         self.report()
-        self.closedb()
+        self.close()
 
 if __name__ == "__main__":
     exam = Exam(20)
