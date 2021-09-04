@@ -10,10 +10,26 @@ class Exam:
             "100 +- 100",
             "100 * 100",
             "1000 / 100",
-            "1000 +- 1000"
+            "1000 +- 1000 +- 1000",
+            "1000 +- 1000",
         ]
         self.qbank = Question(templates)
         self.total = total
+
+    def opendb(self):
+        self.dbfile = "record.txt"
+        self.dbfh = open(self.dbfile, "w")
+
+    def closedb(self):
+        self.dbfh.close()
+
+    def record(self, question, anwser0, anwser, result, dur):
+        flag = "O" if result else "X (%s)" % anwser0
+        line = "%2d. %15s = %-8s %-12s %4.1fs\r\n" % (
+            self.index, question,
+            anwser, flag,
+            dur)
+        self.dbfh.write(line)
 
     def round(self):
         self.index += 1
@@ -38,10 +54,12 @@ class Exam:
                 print(" CORRECT! %.1fs" % dur)
                 err = 0
                 self.correct += 1
+                self.record(question, anwser0, anwser, True, dur)
                 return True
             else:
                 err = 1
                 self.wrong += 1
+                self.record(question, anwser0, anwser, False, dur)
                 print("   WRONG! %.1fs" % dur)
             retry += 1
         return True
@@ -58,6 +76,7 @@ class Exam:
         print("")
 
     def run(self):
+        self.opendb()
         self.index = 0
         self.correct = 0
         self.wrong = 0
@@ -65,9 +84,10 @@ class Exam:
         while self.correct < self.total and self.round():
             print("")
         self.report()
+        self.closedb()
 
 if __name__ == "__main__":
-    exam = Exam()
+    exam = Exam(20)
     exam.run()
 
 
