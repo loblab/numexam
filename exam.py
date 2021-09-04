@@ -10,7 +10,7 @@ class Exam:
             "100 +- 100",
             "100 * 100",
             "1000 / 100",
-            "1000 +- 1000 +- 1000",
+            #"1000 +- 1000 +- 1000",
             "1000 +- 1000",
         ]
         self.qbank = Question(templates)
@@ -76,13 +76,13 @@ class Exam:
     def report(self):
         print("")
         done = self.correct + self.wrong
-        if done > 0:
+        if self.correct > 0:
             self.writeline('=' * 64)
             lt = time.localtime(time.time())
             tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
             self.writeline(" Finish: %s" % tstr)
-            self.writeline("   Cost: %5.1fs, Average: %5.1fs" % (self.dur, self.dur / done), True)
-            self.writeline("Correct: %3d,      Wrong: %3d" % (self.correct, self.wrong), True)
+            self.writeline("   Cost: %5.1fs      Avg: %5.1fs" % (self.dur, self.dur / self.correct), True)
+            self.writeline("Correct: %3d       Wrong: %3d" % (self.correct, self.wrong), True)
             self.writeline("                   Score: %3d" % (100.0 * self.correct / done + 0.5), True)
             print("")
         print("Bye! See you next time.")
