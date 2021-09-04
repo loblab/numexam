@@ -29,13 +29,18 @@ class Question:
         return expr
 
     def anwser(self, expr):
-        return eval(expr)
+        e1 = expr.replace('/', '//')
+        e2 = expr.replace('/', '%')
+        v = eval(e1)
+        r = eval(e2)
+        ret = str(v)
+        if r > 0:
+            ret += '...%d' % r
+        return ret
 
     def valid(self, expr):
-        result = self.anwser(expr)
+        result = eval(expr)
         if result < 0:
-            return False
-        elif int(result) != result:
             return False
         return True
 

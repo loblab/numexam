@@ -20,7 +20,7 @@ class Exam:
         print("     No.: %d/%d" % (self.index, self.total))
         question = self.qbank.question()
         print("Question: " + question)
-        anwser0 = str(int(self.qbank.anwser(question)))
+        anwser0 = self.qbank.anwser(question)
         retry = 0
         while True:
             t1 = time.time()
@@ -47,10 +47,11 @@ class Exam:
     def report(self):
         print("")
         done = self.correct + self.wrong
-        print("   Cost: %5.1fs, Average: %5.1fs" % (self.dur, self.dur / done))
-        print("Correct: %3d,      Wrong: %3d" % (self.correct, self.wrong))
-        print("  Score: %3d" % (100.0 * self.correct / done))
-        print("")
+        if done > 0:
+            print("   Cost: %5.1fs, Average: %5.1fs" % (self.dur, self.dur / done))
+            print("Correct: %3d,      Wrong: %3d" % (self.correct, self.wrong))
+            print("  Score: %3d" % (100.0 * self.correct / done + 0.5))
+            print("")
         print("Bye! See you next time.")
         print("")
 
