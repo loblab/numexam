@@ -19,17 +19,23 @@ class Exam:
     def opendb(self):
         self.dbfile = "record.txt"
         self.dbfh = open(self.dbfile, "w")
+        self.writeline('=' * 64)
 
     def closedb(self):
         self.dbfh.close()
 
+    def writeline(self, line, stdout=False):
+        self.dbfh.write(line + "\r\n")
+        if stdout:
+            print(line)
+
     def record(self, question, anwser0, anwser, result, dur):
         flag = "O" if result else "X (%s)" % anwser0
-        line = "%2d. %15s = %-8s %-12s %4.1fs\r\n" % (
+        line = "%3d. %18s = %-10s %-15s %5.1fs" % (
             self.index, question,
             anwser, flag,
             dur)
-        self.dbfh.write(line)
+        self.writeline(line)
 
     def round(self):
         self.index += 1
@@ -68,9 +74,10 @@ class Exam:
         print("")
         done = self.correct + self.wrong
         if done > 0:
-            print("   Cost: %5.1fs, Average: %5.1fs" % (self.dur, self.dur / done))
-            print("Correct: %3d,      Wrong: %3d" % (self.correct, self.wrong))
-            print("  Score: %3d" % (100.0 * self.correct / done + 0.5))
+            self.writeline('=' * 64)
+            self.writeline("   Time: %5.1fs, Average: %5.1fs" % (self.dur, self.dur / done), True)
+            self.writeline("Correct: %3d,      Wrong: %3d" % (self.correct, self.wrong), True)
+            self.writeline("  Score: %3d" % (100.0 * self.correct / done + 0.5), True)
             print("")
         print("Bye! See you next time.")
         print("")
