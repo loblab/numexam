@@ -28,6 +28,8 @@ class Exam:
             t2 = time.time()
             dur = t2 - t1
             self.dur += dur
+            if len(anwser) < 1:
+                continue
             if anwser == "bye" or anwser == "quit":
                 return False
             if anwser == "next" or anwser == "skip":
