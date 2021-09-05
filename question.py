@@ -1,5 +1,6 @@
 import re
 import random
+import config
 
 class Question:
 
@@ -44,6 +45,8 @@ class Question:
     def valid(self, expr):
         result = eval(expr)
         if result < 1 and result != 0:
+            return False
+        if result > config.MAX_ANWSER:
             return False
         return True
 
