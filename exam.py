@@ -93,6 +93,8 @@ class Exam:
             self.report.rightline(qtype + " <")
         self.report.rightline("[Config] min items: %d; min time: %ds" % (self.minitem, self.mintime))
         self.report.rightline(ABOUT)
+        if self.correct > 0:
+            self.report.print()
 
         print("Bye! See you next time.")
         print()
