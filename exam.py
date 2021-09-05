@@ -5,7 +5,7 @@ import config
 from question import *
 from report import *
 
-TITLE = "  Number Exam"
+TITLE = "Number Exam"
 ABOUT = "Num Exam ver 0.4, 9/5/2021, https://github.com/loblab/numexam"
 
 class Exam:
@@ -19,13 +19,11 @@ class Exam:
     def open(self):
         lt = time.localtime(time.time())
         rptfn = time.strftime("%Y%m%d-%H%M.txt", lt)
-        self.report = Report(rptfn)
-        self.report.leftline(TITLE)
-        self.report.leftline('-' * 32)
         tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
-        self.report.leftline("   Name: %s" % config.USER_NAME, True)
-        self.report.leftline("  Start: %s" % tstr, True)
-        self.report.leftline('=' * 64)
+        self.report = Report(rptfn)
+        line = "   %-22s %-14s %20s" % (TITLE, config.USER_NAME, tstr)
+        self.report.leftline(line, True)
+        self.report.leftline('=' * 64, True)
 
     def record(self, question, anwser0, anwser, result, dur):
         flag = "O" if result else "X (%s)" % anwser0
@@ -76,14 +74,16 @@ class Exam:
         print()
         done = self.correct + self.wrong
         if self.correct > 0:
-            self.report.leftline('=' * 64)
             lt = time.localtime(time.time())
             tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
-            self.report.leftline(" Finish: %s" % tstr, True)
-            self.report.leftline("   Cost: %5.1fs      Avg: %5.1fs" % (self.dur, self.dur / self.correct), True)
+            self.report.leftline('=' * 64, True)
+            avg = self.dur / self.correct
+            line = "   Cost: %5.1fs      Avg: %5.1fs %28s" % (self.dur, avg, tstr)
+            self.report.leftline(line, True)
             self.report.leftline("Correct: %3d       Wrong: %3d" % (self.correct, self.wrong), True)
-            self.report.leftline('-' * 32)
-            self.report.leftline("                   Score: %3d" % (100.0 * self.correct / done + 0.5), True)
+            self.report.leftline('-' * 32, True)
+            score = 100.0 * self.correct / done + 0.5
+            self.report.leftline("                   Score: %3d" % score, True)
             print()
 
         footersize = len(self.qtypes) + 3
