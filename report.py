@@ -1,19 +1,19 @@
 class Report:
 
-    PAGE_LINES = 54
+    PAGE_LINES = 50
     PAGE_WIDTH = 80
 
     def __init__(self, rptfn):
         self.rptfh = open(rptfn, "w")
         self.rptln = 0
-        self.rightfmt = "-%%%ds\r\n" % self.PAGE_WIDTH
+        self.rightfmt = "%%%ds\n" % self.PAGE_WIDTH
 
     def __del__(self):
         self.rptfh.close()
 
     def leftline(self, line="", stdout=False):
         self.rptln += 1
-        self.rptfh.write(line + "\r\n")
+        self.rptfh.write(line + "\n")
         if stdout:
             print(line)
 
