@@ -1,6 +1,6 @@
 class Report:
 
-    PAGE_LINES = 50
+    PAGE_LINES = 54
     PAGE_WIDTH = 80
 
     def __init__(self, rptfn):

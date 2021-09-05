@@ -6,14 +6,15 @@ from question import *
 from report import *
 
 TITLE = "  Number Exam"
-ABOUT = "Num Exam ver 0.2, 9/5/2019, https://github.com/loblab/numexam"
+ABOUT = "Num Exam ver 0.3, 9/5/2021, https://github.com/loblab/numexam"
 
 class Exam:
 
-    def __init__(self, qtypes, total=10):
+    def __init__(self, qtypes, minitem, mintime):
         self.qbank = Question(qtypes)
         self.qtypes = qtypes
-        self.total = total
+        self.minitem = minitem
+        self.mintime = mintime
 
     def open(self):
         lt = time.localtime(time.time())
@@ -22,8 +23,8 @@ class Exam:
         self.report.leftline(TITLE)
         self.report.leftline('-' * 32)
         tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
-        self.report.leftline("   Name: %s" % config.USER_NAME)
-        self.report.leftline("  Start: %s" % tstr)
+        self.report.leftline("   Name: %s" % config.USER_NAME, True)
+        self.report.leftline("  Start: %s" % tstr, True)
         self.report.leftline('=' * 64)
 
     def record(self, question, anwser0, anwser, result, dur):
@@ -36,7 +37,8 @@ class Exam:
 
     def round(self):
         self.index += 1
-        print("     No.: %d/%d" % (self.index, self.total))
+        print()
+        print("     No.: %d/%d" % (self.index, self.minitem))
         question = self.qbank.question()
         print("Question: " + question)
         anwser0 = self.qbank.anwser(question)
@@ -77,18 +79,19 @@ class Exam:
             self.report.leftline('=' * 64)
             lt = time.localtime(time.time())
             tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
-            self.report.leftline(" Finish: %s" % tstr)
+            self.report.leftline(" Finish: %s" % tstr, True)
             self.report.leftline("   Cost: %5.1fs      Avg: %5.1fs" % (self.dur, self.dur / self.correct), True)
             self.report.leftline("Correct: %3d       Wrong: %3d" % (self.correct, self.wrong), True)
             self.report.leftline('-' * 32)
             self.report.leftline("                   Score: %3d" % (100.0 * self.correct / done + 0.5), True)
             print()
 
-        footersize = len(self.qtypes) + 2
+        footersize = len(self.qtypes) + 3
         self.report.gotoline(-footersize)
-        self.report.rightline("Exam Types:")
+        self.report.rightline("[Config] exam types:")
         for qtype in self.qtypes:
             self.report.rightline(qtype + " <")
+        self.report.rightline("[Config] min items: %d; min time: %ds" % (self.minitem, self.mintime))
         self.report.rightline(ABOUT)
 
         print("Bye! See you next time.")
@@ -100,12 +103,13 @@ class Exam:
         self.correct = 0
         self.wrong = 0
         self.dur = 0
-        while self.correct < self.total and self.round():
-            print()
+        while self.correct < self.minitem or self.dur < self.mintime:
+            if not self.round():
+                break
         self.close()
 
 if __name__ == "__main__":
-    exam = Exam(config.EXAM_TYPES, config.EXAM_TOTAL)
+    exam = Exam(config.EXAM_TYPES, config.EXAM_ITEMS, config.EXAM_TIME)
     exam.run()
 
 
