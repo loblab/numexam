@@ -1,26 +1,24 @@
 #!/usr/bin/python3
 
 import time
+import config
 from question import *
 
 class Exam:
 
-    def __init__(self, total=10):
-        templates = [
-            "100 +- 100",
-            "100 * 100",
-            "1000 / 100",
-            #"1000 +- 1000 +- 1000",
-            "1000 +- 1000",
-        ]
-        self.qbank = Question(templates)
+    def __init__(self, types, total=10):
+        self.qbank = Question(types)
+        self.types = types
         self.total = total
 
     def open(self):
         lt = time.localtime(time.time())
         dbfile = time.strftime("%Y%m%d-%H%M.txt", lt)
         self.dbfh = open(dbfile, "w")
+        self.writeline("  Number Exam")
+        self.writeline('-' * 32)
         tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
+        self.writeline("   Name: %s" % config.USER_NAME)
         self.writeline("  Start: %s" % tstr)
         self.writeline('=' * 64)
 
@@ -59,6 +57,9 @@ class Exam:
                 return False
             if anwser == "next" or anwser == "skip":
                 return True
+            if anwser == "help" or anwser == "debug":
+                print("   Debug: %s" % anwser0)
+                continue
             elif anwser == anwser0:
                 print(" CORRECT! %.1fs" % dur)
                 self.correct += 1
@@ -81,6 +82,7 @@ class Exam:
             self.writeline(" Finish: %s" % tstr)
             self.writeline("   Cost: %5.1fs      Avg: %5.1fs" % (self.dur, self.dur / self.correct), True)
             self.writeline("Correct: %3d       Wrong: %3d" % (self.correct, self.wrong), True)
+            self.writeline(' ' * 16 + '-' * 32)
             self.writeline("                   Score: %3d" % (100.0 * self.correct / done + 0.5), True)
             print()
         print("Bye! See you next time.")
@@ -98,7 +100,7 @@ class Exam:
         self.close()
 
 if __name__ == "__main__":
-    exam = Exam(20)
+    exam = Exam(config.EXAM_TYPES, config.EXAM_TOTAL)
     exam.run()
 
 

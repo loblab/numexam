@@ -43,7 +43,7 @@ class Question:
 
     def valid(self, expr):
         result = eval(expr)
-        if result < 0:
+        if result < 1 and result != 0:
             return False
         return True
 
