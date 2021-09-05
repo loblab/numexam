@@ -3,32 +3,28 @@
 import time
 import config
 from question import *
+from report import *
+
+TITLE = "  Number Exam"
+ABOUT = "Num Exam ver 0.2, 9/5/2019, https://github.com/loblab/numexam"
 
 class Exam:
 
-    def __init__(self, types, total=10):
-        self.qbank = Question(types)
-        self.types = types
+    def __init__(self, qtypes, total=10):
+        self.qbank = Question(qtypes)
+        self.qtypes = qtypes
         self.total = total
 
     def open(self):
         lt = time.localtime(time.time())
-        dbfile = time.strftime("%Y%m%d-%H%M.txt", lt)
-        self.dbfh = open(dbfile, "w")
-        self.writeline("  Number Exam")
-        self.writeline('-' * 32)
+        rptfn = time.strftime("%Y%m%d-%H%M.txt", lt)
+        self.report = Report(rptfn)
+        self.report.leftline(TITLE)
+        self.report.leftline('-' * 32)
         tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
-        self.writeline("   Name: %s" % config.USER_NAME)
-        self.writeline("  Start: %s" % tstr)
-        self.writeline('=' * 64)
-
-    def close(self):
-        self.dbfh.close()
-
-    def writeline(self, line, stdout=False):
-        self.dbfh.write(line + "\r\n")
-        if stdout:
-            print(line)
+        self.report.leftline("   Name: %s" % config.USER_NAME)
+        self.report.leftline("  Start: %s" % tstr)
+        self.report.leftline('=' * 64)
 
     def record(self, question, anwser0, anwser, result, dur):
         flag = "O" if result else "X (%s)" % anwser0
@@ -36,7 +32,7 @@ class Exam:
             self.index, question,
             anwser, flag,
             dur)
-        self.writeline(line)
+        self.report.leftline(line)
 
     def round(self):
         self.index += 1
@@ -74,19 +70,27 @@ class Exam:
             retry += 1
         return True
 
-    def report(self):
+    def close(self):
         print()
         done = self.correct + self.wrong
         if self.correct > 0:
-            self.writeline('=' * 64)
+            self.report.leftline('=' * 64)
             lt = time.localtime(time.time())
             tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
-            self.writeline(" Finish: %s" % tstr)
-            self.writeline("   Cost: %5.1fs      Avg: %5.1fs" % (self.dur, self.dur / self.correct), True)
-            self.writeline("Correct: %3d       Wrong: %3d" % (self.correct, self.wrong), True)
-            self.writeline(' ' * 16 + '-' * 32)
-            self.writeline("                   Score: %3d" % (100.0 * self.correct / done + 0.5), True)
+            self.report.leftline(" Finish: %s" % tstr)
+            self.report.leftline("   Cost: %5.1fs      Avg: %5.1fs" % (self.dur, self.dur / self.correct), True)
+            self.report.leftline("Correct: %3d       Wrong: %3d" % (self.correct, self.wrong), True)
+            self.report.leftline('-' * 32)
+            self.report.leftline("                   Score: %3d" % (100.0 * self.correct / done + 0.5), True)
             print()
+
+        footersize = len(self.qtypes) + 2
+        self.report.gotoline(-footersize)
+        self.report.rightline("Exam Types:")
+        for qtype in self.qtypes:
+            self.report.rightline(qtype + " <")
+        self.report.rightline(ABOUT)
+
         print("Bye! See you next time.")
         print()
 
@@ -98,7 +102,6 @@ class Exam:
         self.dur = 0
         while self.correct < self.total and self.round():
             print()
-        self.report()
         self.close()
 
 if __name__ == "__main__":
