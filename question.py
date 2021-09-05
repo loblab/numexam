@@ -10,8 +10,8 @@ class Question:
         self.p_op = re.compile(r'[\*/\+-]+')
         if templates is None:
             self.templates = [
-                "100 +-* 100",
-                "1000 +- 1000"
+                "99 +-* 99",
+                "999 +- 999"
             ]
         else:
             self.templates = templates
@@ -43,7 +43,10 @@ class Question:
         return ret
 
     def valid(self, expr):
-        result = eval(expr)
+        try:
+            result = eval(expr)
+        except:
+            return False
         if result < 1 and result != 0:
             return False
         if result > config.MAX_ANWSER:

@@ -6,7 +6,7 @@ from question import *
 from report import *
 
 TITLE = "  Number Exam"
-ABOUT = "Num Exam ver 0.3, 9/5/2021, https://github.com/loblab/numexam"
+ABOUT = "Num Exam ver 0.4, 9/5/2021, https://github.com/loblab/numexam"
 
 class Exam:
 

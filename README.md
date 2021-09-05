@@ -7,7 +7,7 @@ Auto generate number question and auto check
 
 - Features: supports customizing question types, exam time and item amount
 - Platform: Windows/Linux/MacOS, Python 3.x
-- Ver: 0.3
+- Ver: 0.4
 - Updated: 9/5/2021
 - Created: 9/4/2021
 - Author: loblab
@@ -41,12 +41,12 @@ Auto generate number question and auto check
 
 题目模板中可以有括号和空格，这些都会原样保留。
 
-- "100 * 100": 两位数（以内）乘法，所以也会出现1位数 ，下同
-- "100 +- 100": 两位数加减法
-- "10000 / 100": 4位数除以2位数
-- "1000 +- 1000": 3位数加减法
-- "1000 +- 1000 +- 1000": 3个3位数的加减法
-- "1000 +-*/ (200 +-* 100)": 3位数 加减乘除 (200以内的数 加减乘 100以内的数 的结果）
+- "99 * 99": 两位数（以内）乘法，所以也会出现1位数 ，下同
+- "99 +- 99": 两位数加减法
+- "9999 / 99": 4位数除以2位数
+- "999 +- 999": 3位数加减法
+- "999 +- 999 +- 999": 3个3位数的加减法
+- "999 +-*/ (199 +-* 99)": 3位数 加减乘除 (200以内的数 加减乘 100以内的数 的结果）
 
 ## 答题
 
@@ -69,6 +69,7 @@ Auto generate number question and auto check
 
 ## History
 
+- 0.4 (9/5/2021): Change template, use 99 for 2-digit number (instead of 100)
 - 0.3 (9/5/2021): Support time control, fine tune, add README
 - 0.2 (9/5/2021): Support text report
 - 0.1 (9/4/2021): Initial version, supports auto question and auto check
