@@ -47,20 +47,22 @@ class Exam:
         retry = 0
         while True:
             t1 = time.time()
-            anwser = input("  Anwser: ").strip().lower()
-            t2 = time.time()
+            while True:
+                anwser = input("  Anwser: ").strip().lower()
+                t2 = time.time()
+                if len(anwser) < 1:
+                    continue
+                if anwser == "help" or anwser == "debug":
+                    print("   Debug: %s" % anwser0)
+                    continue
+                elif anwser == "next" or anwser == "skip":
+                    return True
+                elif anwser == "bye" or anwser == "quit":
+                    return False
+                break
             dur = t2 - t1
             self.dur += dur
-            if len(anwser) < 1:
-                continue
-            if anwser == "bye" or anwser == "quit":
-                return False
-            if anwser == "next" or anwser == "skip":
-                return True
-            if anwser == "help" or anwser == "debug":
-                print("   Debug: %s" % anwser0)
-                continue
-            elif anwser == anwser0:
+            if anwser == anwser0:
                 print(" CORRECT! %.1fs" % dur)
                 self.correct += 1
                 self.record(question, anwser0, anwser, True, dur)
