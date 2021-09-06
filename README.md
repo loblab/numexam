@@ -2,13 +2,13 @@
 
 Auto generate number question and auto check
 
-小学算术题，自动出题，自动批改。可配置题型，每次练习题的数目和练习时间。
+小学算术题，自动出题，自动批改，自动打印。可配置题型、每次练习题的数目和练习时间。
 做错的当场重做，直到做对为止。
 
 - Features: supports customizing question types, exam time and item amount
 - Platform: Windows/Linux/MacOS, Python 3.x
 - Ver: 0.5
-- Updated: 9/5/2021
+- Updated: 9/6/2021
 - Created: 9/4/2021
 - Author: loblab
 
