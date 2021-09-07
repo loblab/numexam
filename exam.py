@@ -6,7 +6,7 @@ from question import *
 from report import *
 
 TITLE = "Number Exam"
-ABOUT = "Num Exam ver 0.5, 9/6/2021, https://github.com/loblab/numexam"
+ABOUT = "Num Exam ver 0.6, 9/7/2021, https://github.com/loblab/numexam"
 
 class Exam:
 
@@ -88,13 +88,23 @@ class Exam:
             self.report.leftline(line, True)
             print()
 
-        footersize = len(self.qtypes) + 3
+        rows = []
+        c = len(self.qtypes)
+        for i in range(0, c, 2):
+            t = self.qtypes[i]
+            row = "%24s" % t
+            i += 1
+            if i < c:
+                t = self.qtypes[i]
+                row += "%24s" % t
+            rows.append(row)
+        rows.append(ABOUT)
+
+        footersize = len(rows)
         self.report.gotoline(-footersize)
-        self.report.rightline("[Config] exam types:")
-        for qtype in self.qtypes:
-            self.report.rightline(qtype + " <")
-        self.report.rightline("[Config] min items: %d; min time: %ds" % (self.minitem, self.mintime))
-        self.report.rightline(ABOUT)
+        for r in rows:
+            self.report.rightline(r)
+
         if self.correct >= self.minitem:
             self.report.print()
 

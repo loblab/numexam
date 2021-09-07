@@ -7,8 +7,8 @@ Auto generate number question and auto check
 
 - Features: supports customizing question types, exam time and item amount
 - Platform: Windows/Linux/MacOS, Python 3.x
-- Ver: 0.5
-- Updated: 9/6/2021
+- Ver: 0.6
+- Updated: 9/7/2021
 - Created: 9/4/2021
 - Author: loblab
 
@@ -29,7 +29,7 @@ Auto generate number question and auto check
 
 ## 配置文件说明
 
-- USER_NAME = "Kitty" 学生姓名，可写中文
+- USER_NAME = "Kitty" 学生姓名。最好用英文或拼音（用中文会影响对齐）
 - MAX_ANWSER = 9999 出的题目的答案的最大值，也就是答案不会超过4位数
 - EXAM_ITEMS = 5 每次至少做5道题结束
 - EXAM_TIME = 120 每次至少做满120秒，即2分钟
@@ -69,6 +69,7 @@ Auto generate number question and auto check
 
 ## History
 
+- 0.6 (9/7/2021): Compact footer
 - 0.5 (9/5/2021): Support printer (tested on Windows)
 - 0.4 (9/5/2021): Change template, use 99 for 2-digit number (instead of 100)
 - 0.3 (9/5/2021): Support time control, fine tune, add README
