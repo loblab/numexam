@@ -53,6 +53,8 @@ class Exam:
         self.mintime = mintime
 
     def open(self):
+        print(ABOUT)
+        print()
         lt = time.localtime(time.time())
         rptfn = time.strftime("%Y%m%d-%H%M.txt", lt)
         tstr = time.strftime("%H:%M:%S %m/%d/%Y", lt)
