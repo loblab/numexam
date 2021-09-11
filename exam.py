@@ -6,12 +6,48 @@ from question import *
 from report import *
 
 TITLE = "Number Exam"
-ABOUT = "Num Exam ver 0.6, 9/7/2021, https://github.com/loblab/numexam"
+ABOUT = "Num Exam ver 0.7, 9/11/2021, https://github.com/loblab/numexam"
+
+class Counter:
+    COLS = 3
+
+    def __init__(self):
+        self.etype = {}
+        self.ctype = {}
+
+    def count(self, question, result):
+        qtype = question.type()
+        try:
+            self.ctype[qtype] += 1
+        except:
+            self.ctype[qtype] = 1
+            self.etype[qtype] = 0
+        if not result:
+            self.etype[qtype] += 1
+
+    def summary(self):
+        lines = []
+        line = ""
+        items = 0
+        for key in self.ctype:
+            total = self.ctype[key]
+            err = self.etype[key]
+            ok = total - err
+            score = round(100.0 * ok / total)
+            ss = "%3d(%d/%d)" % (score, err, total)
+            line += "%8s:%-12s" % (key, ss)
+            items += 1
+            if items % self.COLS == 0:
+                lines.append(line)
+                line = ""
+        if len(line) > 0:
+            lines.append(line)
+        return lines
 
 class Exam:
 
     def __init__(self, qtypes, minitem, mintime):
-        self.qbank = Question(qtypes)
+        self.generator = Generator(qtypes)
         self.qtypes = qtypes
         self.minitem = minitem
         self.mintime = mintime
@@ -28,18 +64,19 @@ class Exam:
     def record(self, question, anwser0, anwser, result, dur):
         flag = "O" if result else "X (%s)" % anwser0
         line = "%3d. %18s = %-10s %-15s %6.1fs" % (
-            self.index, question,
+            self.index, question.expr,
             anwser, flag,
             dur)
         self.report.leftline(line)
+        self.counter.count(question, result)
 
     def round(self):
         self.index += 1
         print()
         print("%8s: %d/%d" % ("No.", self.index, self.minitem))
-        question = self.qbank.question()
-        print("%8s: %s" % ("Question", question))
-        anwser0 = self.qbank.anwser(question)
+        question = self.generator.question()
+        print("%8s: %s" % ("Question", question.expr))
+        anwser0 = question.anwser()
         retry = 0
         while True:
             t1 = time.time()
@@ -88,18 +125,8 @@ class Exam:
             self.report.leftline(line, True)
             print()
 
-        rows = []
-        c = len(self.qtypes)
-        for i in range(0, c, 2):
-            t = self.qtypes[i]
-            row = "%24s" % t
-            i += 1
-            if i < c:
-                t = self.qtypes[i]
-                row += "%24s" % t
-            rows.append(row)
+        rows = self.counter.summary()
         rows.append(ABOUT)
-
         footersize = len(rows)
         self.report.gotoline(-footersize)
         for r in rows:
@@ -117,6 +144,7 @@ class Exam:
         self.correct = 0
         self.wrong = 0
         self.dur = 0
+        self.counter = Counter()
         while self.correct < self.minitem or self.dur < self.mintime:
             if not self.round():
                 break

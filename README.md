@@ -7,8 +7,8 @@ Auto generate number question and auto check
 
 - Features: supports customizing question types, exam time and item amount
 - Platform: Windows/Linux/MacOS, Python 3.x
-- Ver: 0.6
-- Updated: 9/7/2021
+- Ver: 0.7
+- Updated: 9/11/2021
 - Created: 9/4/2021
 - Author: loblab
 
@@ -69,6 +69,7 @@ Auto generate number question and auto check
 
 ## History
 
+- 0.7 (9/11/2021): Question type and statistics by type; code refactor
 - 0.6 (9/7/2021): Compact footer
 - 0.5 (9/5/2021): Support printer (tested on Windows)
 - 0.4 (9/5/2021): Change template, use 99 for 2-digit number (instead of 100)
