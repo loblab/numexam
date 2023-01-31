@@ -1,4 +1,5 @@
 import re
+import math
 import random
 import config
 
@@ -77,7 +78,12 @@ class Generator:
         expr = ""
         for token in tokens:
             if Pattern.num.match(token):
-                expr += str(random.randint(1, int(token)))
+                maxv = int(token)
+                if config.STRICT_LEN:
+                    minv = 10 ** math.floor(math.log(maxv, 10))
+                else:
+                    minv = 1
+                expr += str(random.randint(minv, maxv))
             elif Pattern.op.match(token):
                 expr += random.choice(token)
             else:

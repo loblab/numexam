@@ -33,6 +33,7 @@ Auto generate number question and auto check
 - MAX_ANWSER = 9999 出的题目的答案的最大值，也就是答案不会超过4位数
 - EXAM_ITEMS = 5 每次至少做5道题结束
 - EXAM_TIME = 120 每次至少做满120秒，即2分钟
+- STRICT_LEN = True 严格的位数，两位数是10~99 （不包括一位数）
 - EXAM_TYPES = ...  题型配置，详见下面说明
 
 ### 题型配置
@@ -41,7 +42,7 @@ Auto generate number question and auto check
 
 题目模板中可以有括号和空格，这些都会原样保留。
 
-- "99 * 99": 两位数（以内）乘法，所以也会出现1位数 ，下同
+- "99 * 99": 两位数乘法
 - "99 +- 99": 两位数加减法
 - "9999 / 99": 4位数除以2位数
 - "999 +- 999": 3位数加减法
@@ -69,6 +70,7 @@ Auto generate number question and auto check
 
 ## History
 
+- 0.9 (1/31/2023): Support strict num range, i.e. 999 stands for 100~999, not 1~999
 - 0.8 (8/14/2022): Use icons/symbols for correct/wrong/question
 - 0.7 (9/11/2021): Question type and statistics by type; code refactor
 - 0.6 (9/7/2021): Compact footer

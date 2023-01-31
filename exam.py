@@ -6,7 +6,7 @@ from question import *
 from report import *
 
 TITLE = "Number Exam"
-ABOUT = "Num Exam ver 0.8, 8/14/2022, https://github.com/loblab/numexam"
+ABOUT = "Num Exam ver 0.9, 1/31/2023, https://github.com/loblab/numexam"
 
 class Counter:
     COLS = 3
