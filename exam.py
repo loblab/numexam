@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import os
 import time
 import config
 import logging
@@ -67,10 +66,6 @@ class Exam:
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s',
                datefmt='%m/%d/%Y %H:%M:%S')
 
-        try:
-            os.mkdir("log")
-        except Exception as e:
-            self.logger.warn(str(e))
         logfile = 'numexam.log'
         fh = logging.FileHandler(logfile)
         fh.setLevel(logging.DEBUG)
@@ -114,15 +109,18 @@ class Exam:
                 t2 = time.time()
                 if len(anwser) < 1:
                     continue
-                self.logger.info(f'anwser: {anwser}')
                 if anwser == "help" or anwser == "debug":
                     print("%8s: %s" % ("Debug", anwser0))
+                    self.logger.warning(f'anwser: {anwser}')
                     continue
                 elif anwser == "next" or anwser == "skip":
+                    self.logger.warning(f'anwser: {anwser}')
                     return True
                 elif anwser == "bye" or anwser == "quit":
+                    self.logger.warning(f'anwser: {anwser}')
                     return False
                 break
+            self.logger.info(f'anwser: {anwser}')
             dur = t2 - t1
             self.dur += dur
             if anwser == anwser0:
