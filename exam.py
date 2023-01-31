@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 
+import os
 import time
 import config
+import logging
 from question import *
 from report import *
 
 TITLE = "Number Exam"
-ABOUT = "Num Exam ver 0.9, 1/31/2023, https://github.com/loblab/numexam"
+ABOUT = "Num Exam ver 1.0, 1/31/2023, https://github.com/loblab/numexam"
 
 class Counter:
     COLS = 3
@@ -55,6 +57,25 @@ class Exam:
         self.qtypes = qtypes
         self.minitem = minitem
         self.mintime = mintime
+        self.init_logger()
+        self.logger.info(f'{config.USER_NAME} start')
+
+    def init_logger(self):
+        self.logger = logging.getLogger("numexam")
+        self.logger.setLevel(logging.INFO)
+
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s',
+               datefmt='%m/%d/%Y %H:%M:%S')
+
+        try:
+            os.mkdir("log")
+        except Exception as e:
+            self.logger.warn(str(e))
+        logfile = 'numexam.log'
+        fh = logging.FileHandler(logfile)
+        fh.setLevel(logging.DEBUG)
+        fh.setFormatter(formatter)
+        self.logger.addHandler(fh)
 
     def open(self):
         print(ABOUT)
@@ -75,6 +96,7 @@ class Exam:
             dur)
         self.report.leftline(line)
         self.counter.count(question, result)
+        self.logger.info('result: ' + ('CORRECT' if result else 'WRONG'))
 
     def round(self):
         self.index += 1
@@ -82,6 +104,7 @@ class Exam:
         print("%8s: %d/%d" % ("No.", self.index, self.minitem))
         question = self.generator.question()
         print("%8s: %s" % ("Question", question.expr))
+        self.logger.info(f'question: {question.expr}')
         anwser0 = question.anwser()
         retry = 0
         while True:
@@ -91,6 +114,7 @@ class Exam:
                 t2 = time.time()
                 if len(anwser) < 1:
                     continue
+                self.logger.info(f'anwser: {anwser}')
                 if anwser == "help" or anwser == "debug":
                     print("%8s: %s" % ("Debug", anwser0))
                     continue
@@ -142,6 +166,7 @@ class Exam:
         #    self.report.print()
 
         print("Bye! See you next time.")
+        self.logger.info(f'{config.USER_NAME} end')
         print()
 
     def run(self):
